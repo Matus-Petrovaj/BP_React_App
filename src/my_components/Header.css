@@ -1,0 +1,9 @@
+/* Header.css */
+.header {
+    background-color: #13bdee;
+    color: #f4f4f4;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

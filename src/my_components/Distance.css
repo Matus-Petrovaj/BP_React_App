@@ -1,0 +1,17 @@
+/* Common style for both Distance and Pressure components */
+.distance {
+    margin: 20px;
+    padding: 10px;
+    border: 3px solid #ddd;
+    border-radius: 10px;
+    text-align: center;
+    width: 50%;
+    display: inline-block; /* Add this property */
+}
+
+/* Style for the temperature bar */
+.distance-bar {
+    height: 10px;
+    background-color: #3498db; /* Change this to your preferred bar color */
+    transition: width 1s; /* Add a smooth transition animation to the width */
+}

@@ -1,25 +1,18 @@
-import logo from './logo.svg';
 import './App.css';
+import Header from "./my_components/Header";
+import Body from "./my_components/Body";
+import Distance from "./my_components/Distance";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    return (
+        <div className="App">
+            <Header/>
+            <Body/>
+            <div className="Elements">
+                <Distance/>
+            </div>
+        </div>
+    );
 }
 
 export default App;
