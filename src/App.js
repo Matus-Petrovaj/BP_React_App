@@ -1,10 +1,10 @@
 import './App.css';
-import './my_components/Menu.css'; // Import Menu.css for button styles
+import './my_components/Menu/Menu.css'; // Import Menu.css for button styles
 import React, { useState } from 'react';
-import Header from './my_components/Header';
-import Body from './my_components/Body';
-import Distance from './my_components/Distance';
-import BMEData from './my_components/BMEData';
+import Header from './my_components/Header/Header';
+import Body from './my_components/Body/Body';
+import Distance from './my_components/DistanceSensor/Distance';
+import BMEData from './my_components/BMESensor/BMEData';
 
 function App() {
     const [displayType, setDisplayType] = useState('distance'); // State to manage display type
