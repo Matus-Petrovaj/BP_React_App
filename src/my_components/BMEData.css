@@ -1,0 +1,37 @@
+/* Common style for Temperature, Humidity, and Pressure components */
+.bme-item {
+    margin: 20px;
+    padding: 20px;
+    border: 2px solid #e74c3c;
+    border-radius: 15px;
+    text-align: center;
+    width: 45%;
+    display: inline-block;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Updated font */
+    background-color: #f5f5f5;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adding a subtle shadow */
+}
+
+/* Style for the temperature bar */
+.bme-bar {
+    height: 12px;
+    border-radius: 6px;
+    background-image: linear-gradient(to right, #f39c12, #e74c3c); /* Gradient with different colors */
+    transition: width 1s ease-in-out;
+    width: 0%;
+    margin-top: 15px;
+}
+
+/* Optional: Adding some styling to the text for better readability */
+.bme-item p {
+    margin: 12px 0;
+    font-size: 20px;
+    color: #333;
+}
+
+/* Additional style for the container */
+.bme-item h4 {
+    font-size: 18px;
+    margin-bottom: 8px;
+    color: #555;
+}

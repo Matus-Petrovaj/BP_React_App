@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import './Distance.css';
 
 const Distance = () => {
@@ -20,7 +20,7 @@ const Distance = () => {
 
         const intervalId = setInterval(() => {
             fetchData(); // Fetch data every 5 seconds (for example)
-        }, 5000); // Adjust the interval as needed (in milliseconds)
+        }, 1000); // Adjust the interval as needed (in milliseconds)
 
         return () => clearInterval(intervalId); // Cleanup on component unmount
     }, []);
@@ -30,8 +30,9 @@ const Distance = () => {
     return (
         <div className="distance">
             <h2>Distance</h2>
+            <h4>Distance measured by HY-SRF05 sensor</h4>
             <p>{distance !== null ? `${distance} cm` : 'Loading...'}</p>
-            <div className="distance-bar" style={{ width: barWidth }}></div>
+            <div className="distance-bar" style={{width: barWidth}}></div>
         </div>
     );
 };

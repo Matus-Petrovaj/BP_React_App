@@ -1,0 +1,22 @@
+/* Menu button styles */
+.Menu {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.Menu button {
+    padding: 10px 20px;
+    margin: 0 10px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+    background-color: #3498db;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+.Menu button:hover {
+    background-color: #2980b9;
+}

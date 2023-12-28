@@ -6,12 +6,22 @@
     border-radius: 10px;
     text-align: center;
     width: 50%;
-    display: inline-block; /* Add this property */
+    display: inline-block;
+    font-family: Arial, sans-serif; /* Optional: Setting a font */
 }
 
 /* Style for the temperature bar */
 .distance-bar {
     height: 10px;
-    background-color: #3498db; /* Change this to your preferred bar color */
-    transition: width 1s; /* Add a smooth transition animation to the width */
+    border-radius: 5px; /* Round the corners for a softer look */
+    background-image: linear-gradient(to right, #3498db, #1abc9c); /* Gradient colors */
+    transition: width 1s ease-in-out; /* Smooth transition animation */
+    width: 0%; /* Start with no width */
+}
+
+/* Optional: Adding some styling to the text for better readability */
+.distance p {
+    margin: 10px 0;
+    font-size: 18px;
+    color: #555;
 }

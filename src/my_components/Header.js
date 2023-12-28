@@ -4,7 +4,7 @@ import './Header.css'; // Create this CSS file for styling
 const Header = () => {
     return (
         <div className="header">
-            <h1>Web App</h1>
+            <h1>Web App for lab monitoring</h1>
         </div>
     );
 };
