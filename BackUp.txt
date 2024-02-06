@@ -1,0 +1,249 @@
+
+Codes backup
+
+
+MySQL distance_table
+
+CREATE DATABASE IF NOT EXISTS distance_db;
+USE distance_db;
+
+CREATE TABLE IF NOT EXISTS distance_table (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    distance INT,
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+
+MySQL bme_table
+
+CREATE TABLE bme_table (
+    id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, -- Unique ID for each entry
+    temperature FLOAT, -- Field to store temperature readings
+    humidity FLOAT, -- Field to store humidity readings
+    pressure FLOAT, -- Field to store pressure readings
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP -- Automatically tracks entry time
+);
+
+
+MySQL gas_table
+
+CREATE TABLE gas_table (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    ppm DOUBLE,
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+
+php script2.php
+
+<?php
+header("Access-Control-Allow-Origin: *");
+
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+$servername = "localhost";
+$username = "paterson";
+$password = "Karlito1";
+$dbname = "distance_db";
+
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// Check for distance, temperature, humidity, pressure, rzero, correctedResistance, ppm data
+if (isset($_GET['distance']) && isset($_GET['temperature']) && isset($_GET['humidity']) && isset($_GET['pressure']) && isset($_GET['rzero']) && isset($_GET['correctedResistance']) && isset($_GET['ppm'])) {
+    $distance = $_GET['distance'];
+    $temperature = $_GET['temperature'];
+    $humidity = $_GET['humidity'];
+    $pressure = $_GET['pressure'];
+    $rzero = $_GET['rzero'];
+    $correctedResistance = $_GET['correctedResistance'];
+    $ppm = $_GET['ppm'];
+
+    // Ensure the values are not empty and are numeric
+    if (!empty($distance) && !empty($temperature) && !empty($humidity) && !empty($pressure) && !empty($rzero) && !empty($correctedResistance) && !empty($ppm) &&
+        is_numeric($distance) && is_numeric($temperature) && is_numeric($humidity) && is_numeric($pressure) && is_numeric($rzero) && is_numeric($correctedResistance) && is_numeric($ppm)) {
+
+        // Insert BME sensor data into bme_table
+        $stmt = $conn->prepare("INSERT INTO bme_table (temperature, humidity, pressure) VALUES (?, ?, ?)");
+        $stmt->bind_param("ddd", $temperature, $humidity, $pressure);
+
+        if ($stmt->execute()) {
+            echo "BME Record added successfully";
+
+            // Insert distance data into distance_table (existing table)
+            $distanceStmt = $conn->prepare("INSERT INTO distance_table (distance, timestamp) VALUES (?, NOW())");
+            $distanceStmt->bind_param("i", $distance);
+
+            if ($distanceStmt->execute()) {
+                echo " | Distance Record added successfully";
+
+                // Insert gas sensor data into gas_table
+                $gasStmt = $conn->prepare("INSERT INTO gas_table (ppm, timestamp) VALUES (?, NOW())");
+                $gasStmt->bind_param("d", $ppm);
+
+                if ($gasStmt->execute()) {
+                    echo " | Gas Record added successfully";
+                } else {
+                    echo " | Error adding gas record: " . $gasStmt->error;
+                }
+
+                $gasStmt->close();
+
+                // Additional operations as per your existing logic (deleting old records, auto-increment reset)
+                // ...
+            } else {
+                echo " | Error adding distance record: " . $distanceStmt->error;
+            }
+
+            $distanceStmt->close();
+        } else {
+            echo "Error adding BME record: " . $stmt->error;
+        }
+
+        $stmt->close();
+    } else {
+        echo "Error: Invalid or empty values received.";
+    }
+} else {
+    echo "Error: Data not received. Received data: " . print_r($_GET, true);
+}
+
+$conn->close();
+?>
+
+
+
+php fetch_distance.php
+
+<?php
+header("Access-Control-Allow-Origin: *"); // Allow requests from any origin
+
+$servername = "localhost";
+$username = "paterson";
+$password = "Karlito1";
+$dbname = "distance_db";
+
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname); // Establish database connection
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error); // Terminate script if connection fails
+}
+
+// Fetch distance data
+$sql = "SELECT distance FROM distance_table ORDER BY timestamp DESC LIMIT 1"; // SQL query to retrieve latest distance data
+$result = $conn->query($sql); // Execute the query
+
+if ($result->num_rows > 0) {
+    $row = $result->fetch_assoc(); // Fetch a single row as an associative array
+    $distance = $row["distance"]; // Store distance data
+
+    // Return data in JSON format
+    header('Content-Type: application/json'); // Set response content type
+    echo json_encode(array('distance' => $distance)); // Output distance data in JSON format
+} else {
+    echo "No distance data found."; // Output message if no data is found
+}
+
+$conn->close(); // Close the database connection
+?>
+
+
+
+php fetch_bme.php
+
+<?php
+header("Access-Control-Allow-Origin: *"); // Allow requests from any origin
+
+$servername = "localhost";
+$username = "paterson";
+$password = "Karlito1";
+$dbname = "distance_db";
+
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname); // Establish database connection
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error); // Terminate script if connection fails
+}
+
+// Fetch temperature, humidity, and pressure data
+$sql = "SELECT temperature, humidity, pressure FROM bme_table ORDER BY timestamp DESC LIMIT 1"; // SQL query to retrieve latest sensor data
+$result = $conn->query($sql); // Execute the query
+
+if ($result->num_rows > 0) {
+    $row = $result->fetch_assoc(); // Fetch a single row as an associative array
+    $data = array(
+        'temperature' => $row["temperature"], // Store temperature data
+        'humidity' => $row["humidity"], // Store humidity data
+        'pressure' => $row["pressure"] // Store pressure data
+    );
+
+    // Return data in JSON format
+    header('Content-Type: application/json'); // Set response content type
+    echo json_encode($data); // Output sensor data in JSON format
+} else {
+    echo "No BME data found."; // Output message if no data is found
+}
+
+$conn->close(); // Close the database connection
+?>
+
+
+
+php fetch_gas.php
+
+<?php
+header("Access-Control-Allow-Origin: *");
+
+$servername = "localhost";
+$username = "paterson";
+$password = "Karlito1";
+$dbname = "distance_db";
+
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// Fetch gas sensor data
+$sql = "SELECT ppm FROM gas_table ORDER BY timestamp DESC LIMIT 1"; // Assuming you want the latest PPM
+$result = $conn->query($sql);
+
+if ($result->num_rows > 0) {
+    $row = $result->fetch_assoc();
+    $ppm = $row["ppm"];
+
+    // Return data in JSON format
+    header('Content-Type: application/json');
+    echo json_encode(array('ppm' => $ppm));
+} else {
+    echo "No gas sensor data found.";
+}
+
+$conn->close();
+?>
+
+
+
+Add new php script to server
+
+paterson@raspberrypimatus:~ $ sudo cp /home/paterson/phpScripts/fetch_bme.php /var/www/html/
+paterson@raspberrypimatus:~ $ sudo chown www-data:www-data /var/www/html/fetch_bme.php
+paterson@raspberrypimatus:~ $ sudo chmod 755 /var/www/html/fetch_bme.php
+paterson@raspberrypimatus:~ $ sudo service mosquitto restart
+paterson@raspberrypimatus:~ $ sudo systemctl restart mosquitto
+

@@ -20,7 +20,7 @@ const BMEData = () => {
 
         const intervalId = setInterval(() => {
             fetchBMEData(); // Fetch data every 5 seconds (for example)
-        }, 5000); // Adjust the interval as needed (in milliseconds)
+        }, 1000); // Adjust the interval as needed (in milliseconds)
 
         return () => clearInterval(intervalId); // Cleanup on component unmount
     }, []);
