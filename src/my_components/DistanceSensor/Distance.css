@@ -1,4 +1,4 @@
-/* Common style for both Distance and Pressure components */
+/* Spoločný štýl pre komponenty Distance a Pressure */
 .distance {
     margin: 20px;
     padding: 10px;
@@ -7,19 +7,19 @@
     text-align: center;
     width: 50%;
     display: inline-block;
-    font-family: Arial, sans-serif; /* Optional: Setting a font */
+    font-family: Arial, sans-serif; /* Voliteľné: Nastavenie písma */
 }
 
-/* Style for the temperature bar */
+/* Štýl pre čiaru vzdialenosti */
 .distance-bar {
     height: 10px;
-    border-radius: 5px; /* Round the corners for a softer look */
-    background-image: linear-gradient(to right, #3498db, #1abc9c); /* Gradient colors */
-    transition: width 1s ease-in-out; /* Smooth transition animation */
-    width: 0%; /* Start with no width */
+    border-radius: 5px; /* Zaoblenie rohov pre mäkší vzhľad */
+    background-image: linear-gradient(to right, #3498db, #1abc9c); /* Farebný prechod */
+    transition: width 1s ease-in-out; /* Plynulá animácia prechodu */
+    width: 0%; /* Začiatočná šírka je nula */
 }
 
-/* Optional: Adding some styling to the text for better readability */
+/* Voliteľné: Pridanie niektorých štýlov k textu pre lepšiu čitateľnosť */
 .distance p {
     margin: 10px 0;
     font-size: 18px;

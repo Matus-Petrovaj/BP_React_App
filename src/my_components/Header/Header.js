@@ -1,10 +1,10 @@
 import React from 'react';
-import './Header.css'; // Create this CSS file for styling
+import './Header.css'; // CSS súbor pre štýlovanie
 
 const Header = () => {
     return (
         <div className="header">
-            <h1>Web App for lab monitoring</h1>
+            <h1>Web Aplikácia pre monitorovanie laboratória</h1>
         </div>
     );
 };

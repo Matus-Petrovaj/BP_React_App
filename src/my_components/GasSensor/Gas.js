@@ -1,35 +1,45 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import Chart from 'chart.js/auto';
 import 'chartjs-adapter-date-fns';
 import './Gas.css';
 
 const Gas = () => {
+    // State pre aktuálnu hodnotu plynu (v ppm)
     const [ppm, setPpm] = useState(null);
-    const historicalDataRef = useRef([]); // Use useRef for historical data
-    const chartRef = useRef(null);
-    const [timeRange, setTimeRange] = useState('1h'); // Default time range is 1 hour
 
+    // Ref pre uchovávanie historických údajov o plyne
+    const historicalDataRef = useRef([]);
+
+    // Ref pre uchovávanie odkazu na Chart.js graf
+    const chartRef = useRef(null);
+
+    // State pre aktuálny časový rozsah pre historické údaje
+    const [timeRange, setTimeRange] = useState('1h');
+
+    // Funkcia na získanie údajov o plyne zo servera
     const fetchData = () => {
-        // Adjust your API endpoint to use the new script for historical data
         const apiUrl = `http://192.168.0.74/fetch_gas_historical.php?timeRange=${timeRange}`;
 
         fetch(apiUrl)
             .then(response => response.json())
             .then(data => {
                 if (data && data.length > 0) {
-                    // Assuming data format is { ppm: number, timestamp: string }
+                    // Získanie najnovšej hodnoty ppm
                     const newPpm = data[data.length - 1].ppm;
                     setPpm(newPpm);
 
-                    // Assuming historical data format is { ppm: number, timestamp: string }
-                    const historicalData = data.map(entry => ({ x: new Date(entry.timestamp), y: entry.ppm }));
+                    // Prevod údajov na formát očakávaný Chart.js (x, y)
+                    const historicalData = data.map(entry => ({
+                        x: new Date(entry.timestamp),
+                        y: entry.ppm,
+                    }));
                     historicalDataRef.current = historicalData;
                 }
             })
-            .catch(error => console.error('Error fetching gas data:', error));
+            .catch(error => console.error('Chyba pri získavaní údajov o plyne:', error));
     };
 
-
+    // Effekt pre načítanie údajov pri načítaní komponentu a nastavení intervalu na periodické získavanie údajov
     useEffect(() => {
         fetchData();
 
@@ -40,12 +50,9 @@ const Gas = () => {
         return () => {
             clearInterval(fetchIntervalId);
         };
-    }, [timeRange]); // Add timeRange as a dependency to fetch data based on the selected range
+    }, [timeRange]);
 
-
-    const maxPpm = 7000;
-    const barWidth = ppm ? `${Math.min((ppm / maxPpm) * 100, 100)}%` : '0%';
-
+    // Effekt pre vytvorenie alebo aktualizáciu Chart.js grafu na základe zmien v hodnote ppm
     useEffect(() => {
         const ctx = document.getElementById('gasChart');
 
@@ -53,12 +60,15 @@ const Gas = () => {
             chartRef.current.destroy();
         }
 
+        const maxPpmValue = Math.max(...historicalDataRef.current.map(entry => entry.y), 500);
+        const yAxisMax = Math.ceil(maxPpmValue / 1000) * 1000;
+
         const myChart = new Chart(ctx, {
             type: 'line',
             data: {
                 datasets: [{
-                    label: 'Gas PPM',
-                    data: historicalDataRef.current, // Use historicalDataRef instead of historicalData
+                    label: 'Plyn PPM',
+                    data: historicalDataRef.current,
                     borderColor: '#3498db',
                     fill: false,
                 }],
@@ -75,16 +85,19 @@ const Gas = () => {
                         },
                         title: {
                             display: true,
-                            text: 'Time',
+                            text: 'Čas',
                         },
                     },
                     y: {
                         title: {
                             display: true,
-                            text: 'Gas PPM',
+                            text: 'Plyn PPM',
                         },
                         min: 0,
-                        max: maxPpm,
+                        max: yAxisMax,
+                        ticks: {
+                            stepSize: yAxisMax / 10, // Adjust the number of y-axis ticks as needed
+                        },
                     },
                 },
             },
@@ -95,11 +108,12 @@ const Gas = () => {
         return () => {
             myChart.destroy();
         };
-    }, [ppm]); // Update the chart when ppm changes
+    }, [ppm, historicalDataRef.current]);
 
+    // Effekt pre periodické vymazanie historických údajov na zachovanie pamäti
     useEffect(() => {
         const resetIntervalId = setInterval(() => {
-            historicalDataRef.current = []; // Clear historical data using useRef
+            historicalDataRef.current = [];
             chartRef.current?.update();
         }, 15 * 60 * 1000);
 
@@ -108,38 +122,37 @@ const Gas = () => {
         };
     }, []);
 
-    // Add a function to handle time range selection
+    // Funkcia na obsluhu zmeny časového rozsahu
     const handleTimeRangeChange = newTimeRange => {
         setTimeRange(newTimeRange);
-        fetchData(); // Fetch data immediately when time range changes
+        fetchData();
     };
 
+    // Vykreslenie komponentu
     return (
         <div className="gas">
-            <h2>Gas PPM</h2>
-            <h4>Gas PPM measured by your gas sensor</h4>
-            <p>{ppm !== null ? `${ppm} PPM` : 'Loading...'}</p>
+            <h2>Plyn PPM</h2>
+            <h4>Plyn PPM meraný senzorom plynu</h4>
+            <p>{ppm !== null ? `${ppm} PPM` : 'Načítava sa...'}</p>
             <div className="gas-bar-container">
-                <div className="gas-bar" style={{width: barWidth}}></div>
+                <div className="gas-bar" style={{width: ppm ? `${Math.min((ppm / 7000) * 100, 100)}%` : '0%'}}></div>
             </div>
 
-            {/* Display historical data as a line chart */}
-            <h3>Historical Data</h3>
-            <div className="historical-chart">
+            <h3>Historické Údaje</h3>
+            <div className="historical-chart-gas">
                 <canvas id="gasChart"></canvas>
             </div>
 
             <div className="time-range-selector">
-                <label>Time Range: </label>
+                <label>Časový Rozsah: </label>
                 <select value={timeRange} onChange={e => handleTimeRangeChange(e.target.value)}>
-                    <option value="1h">1 Hour</option>
-                    <option value="2h">2 Hours</option>
-                    <option value="4h">4 Hours</option>
-                    <option value="6h">6 Hours</option>
-                    <option value="12h">12 Hours</option>
-                    <option value="1d">1 Day</option>
-                    <option value="1w">1 Week</option>
-                    {/* Add more options as needed */}
+                    <option value="1h">1 Hodina</option>
+                    <option value="2h">2 Hodiny</option>
+                    <option value="4h">4 Hodiny</option>
+                    <option value="6h">6 Hodín</option>
+                    <option value="12h">12 Hodín</option>
+                    <option value="1d">1 Deň</option>
+                    <option value="1w">1 Týždeň</option>
                 </select>
             </div>
         </div>

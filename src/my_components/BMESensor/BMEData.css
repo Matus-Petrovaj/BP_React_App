@@ -1,4 +1,4 @@
-/* Common style for Temperature, Humidity, and Pressure components */
+/* Spoločný štýl pre komponenty Teplota, Vlhkosť a Tlak */
 .bme-item {
     margin: 20px;
     padding: 20px;
@@ -7,31 +7,63 @@
     text-align: center;
     width: 45%;
     display: inline-block;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Updated font */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Aktualizovaný font */
     background-color: #f5f5f5;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adding a subtle shadow */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Pridanie jemnej tiene */
 }
 
-/* Style for the temperature bar */
+/* Štýl pre teplotný prúžok */
 .bme-bar {
     height: 12px;
     border-radius: 6px;
-    background-image: linear-gradient(to right, #f39c12, #e74c3c); /* Gradient with different colors */
+    background-image: linear-gradient(to right, #f39c12, #e74c3c); /* Gradient s rôznymi farbami */
     transition: width 1s ease-in-out;
     width: 0%;
     margin-top: 15px;
 }
 
-/* Optional: Adding some styling to the text for better readability */
+/* Voliteľné: Pridanie štýlu k textu pre lepšiu čitateľnosť */
 .bme-item p {
     margin: 12px 0;
     font-size: 20px;
     color: #333;
 }
 
-/* Additional style for the container */
+/* Dodatočný štýl pre kontajner */
 .bme-item h4 {
     font-size: 18px;
     margin-bottom: 8px;
     color: #555;
+}
+
+/* Dodatočný štýl pre historické grafy */
+.historical-chart-bme {
+    margin: 20px; /* Znížený okraj */
+    padding: 20px; /* Znížený padding */
+    border: 3px solid #e74c3c;
+    border-radius: 15px;
+    text-align: center;
+    display: inline-block; /* Prispôsobený display property */
+    vertical-align: top; /* Zarovná grafy hore */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Aktualizovaný font */
+    background-color: #f5f5f5;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Pridanie jemnej tiene */
+}
+
+/* Štýlovanie pre výberový dropdown */
+.historical-chart-bme select {
+    padding: 8px;
+    font-size: 16px;
+    margin-bottom: 10px; /* Znížený okraj */
+}
+
+/* Štýlovanie pre každý historický graf canvas */
+.historical-chart-bme canvas {
+    width: 100%;
+    max-width: 800px; /* Prispôsobte maximálnu šírku podľa potreby */
+    margin: 0 auto;
+    margin-bottom: 10px; /* Znížený okraj */
+    border: 2px solid #3498db;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Pridanie jemnej tiene */
 }

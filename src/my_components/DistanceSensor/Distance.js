@@ -1,38 +1,152 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
+import Chart from 'chart.js/auto';
+import 'chartjs-adapter-date-fns';
 import './Distance.css';
 
 const Distance = () => {
+    // Stav pre aktuálnu vzdialenosť (v cm)
     const [distance, setDistance] = useState(null);
 
+    // Ref pre uchovávanie historických údajov o vzdialenosti
+    const historicalDataRef = useRef([]);
+
+    // Ref pre uchovávanie odkazu na Chart.js graf
+    const chartRef = useRef(null);
+
+    // Stav pre aktuálny časový rozsah pre historické údaje
+    const [timeRange, setTimeRange] = useState('1h');
+
+    // Funkcia na získanie údajov o vzdialenosti zo servera
     const fetchData = () => {
-        fetch('http://192.168.0.74/fetch_distance.php')
+        const apiUrl = `http://192.168.0.74/fetch_distance_historical.php?timeRange=${timeRange}`;
+
+        fetch(apiUrl)
             .then(response => response.json())
             .then(data => {
-                if (data && data.distance) {
-                    setDistance(data.distance);
+                if (data && data.length > 0) {
+                    // Získanie najnovšej hodnoty vzdialenosti
+                    const newDistance = data[data.length - 1].distance;
+                    setDistance(newDistance);
+
+                    // Prevod údajov na formát očakávaný Chart.js (x, y)
+                    const historicalData = data.map(entry => ({
+                        x: new Date(entry.timestamp),
+                        y: entry.distance,
+                    }));
+                    historicalDataRef.current = historicalData;
                 }
             })
-            .catch(error => console.error('Error fetching data:', error));
+            .catch(error => console.error('Chyba pri získavaní údajov o vzdialenosti:', error));
     };
 
+    // Effekt pre načítanie údajov pri načítaní komponentu a nastavení intervalu na periodické získavanie údajov
     useEffect(() => {
-        fetchData(); // Fetch data initially when component mounts
+        fetchData();
 
-        const intervalId = setInterval(() => {
-            fetchData(); // Fetch data every 5 seconds (for example)
-        }, 1000); // Adjust the interval as needed (in milliseconds)
+        const fetchIntervalId = setInterval(() => {
+            fetchData();
+        }, 5000);
 
-        return () => clearInterval(intervalId); // Cleanup on component unmount
+        return () => {
+            clearInterval(fetchIntervalId);
+        };
+    }, [timeRange]);
+
+    // Effekt pre vytvorenie alebo aktualizáciu Chart.js grafu na základe zmien v hodnote vzdialenosti
+    useEffect(() => {
+        const ctx = document.getElementById('distanceChart');
+
+        if (chartRef.current) {
+            chartRef.current.destroy();
+        }
+
+        const myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                datasets: [{
+                    label: 'Vzdialenosť (cm)',
+                    data: historicalDataRef.current,
+                    borderColor: '#3498db',
+                    fill: false,
+                }],
+            },
+            options: {
+                scales: {
+                    x: {
+                        type: 'time',
+                        time: {
+                            unit: 'minute',
+                            displayFormats: {
+                                minute: 'HH:mm',
+                            },
+                        },
+                        title: {
+                            display: true,
+                            text: 'Čas',
+                        },
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Vzdialenosť (cm)',
+                        },
+                        // Add other options as needed
+                    },
+                },
+            },
+        });
+
+        chartRef.current = myChart;
+
+        return () => {
+            myChart.destroy();
+        };
+    }, [distance]);
+
+    // Effekt pre periodické vymazanie historických údajov na zachovanie pamäti
+    useEffect(() => {
+        const resetIntervalId = setInterval(() => {
+            historicalDataRef.current = [];
+            chartRef.current?.update();
+        }, 15 * 60 * 1000);
+
+        return () => {
+            clearInterval(resetIntervalId);
+        };
     }, []);
 
-    const barWidth = distance ? `${((distance - 2) / 448) * 100}%` : '0%';
+    // Funkcia na obsluhu zmeny časového rozsahu
+    const handleTimeRangeChange = newTimeRange => {
+        setTimeRange(newTimeRange);
+        fetchData();
+    };
 
+    // Vykreslenie komponentu
     return (
         <div className="distance">
-            <h2>Distance</h2>
-            <h4>Distance measured by HY-SRF05 sensor</h4>
-            <p>{distance !== null ? `${distance} cm` : 'Loading...'}</p>
-            <div className="distance-bar" style={{width: barWidth}}></div>
+            <h2>Vzdialenosť</h2>
+            <h4>Vzdialenosť meraná senzorom HY-SRF05</h4>
+            <p>{distance !== null ? `${distance} cm` : 'Načítava sa...'}</p>
+
+            {/* Zobrazenie historických údajov ako čiarový graf */}
+            <h3>Historické Údaje</h3>
+            <div className="historical-chart-distance">
+                <canvas id="distanceChart"></canvas>
+            </div>
+
+            <div className="time-range-selector">
+                <label>Časový Rozsah: </label>
+                <select value={timeRange} onChange={e => handleTimeRangeChange(e.target.value)}>
+                    <option value="1h">1 Hodina</option>
+                    <option value="2h">2 Hodiny</option>
+                    <option value="4h">4 Hodiny</option>
+                    <option value="6h">6 Hodín</option>
+                    <option value="12h">12 Hodín</option>
+                    <option value="1d">1 Deň</option>
+                    <option value="1w">1 Týždeň</option>
+                    {/* Pridajte ďalšie možnosti podľa potreby */}
+                </select>
+            </div>
         </div>
     );
 };

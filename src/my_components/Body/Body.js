@@ -1,10 +1,10 @@
 import React from 'react';
-import './Body.css'
+import './Body.css';
 
 const Body = () => {
     return (
         <div className="body">
-            <p>Welcome to my web app for laboratory monitoring and measurements. This is the body of the app.</p>
+            <p>Vitajte v mojej webovej aplikácii na monitorovanie a meranie v laboratóriu. Telo aplikácie.</p>
         </div>
     );
 };
