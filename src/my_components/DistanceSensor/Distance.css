@@ -1,27 +1,62 @@
-/* Spoločný štýl pre komponenty Distance a Pressure */
+/* Common style for Distance component */
 .distance {
     margin: 20px;
     padding: 10px;
-    border: 3px solid #ddd;
+    border: 3px solid #3498db; /* Updated border color to match Gas component */
     border-radius: 10px;
     text-align: center;
     width: 50%;
     display: inline-block;
-    font-family: Arial, sans-serif; /* Voliteľné: Nastavenie písma */
+    font-family: Arial, sans-serif;
 }
 
-/* Štýl pre čiaru vzdialenosti */
+/* Style for the distance bar */
 .distance-bar {
     height: 10px;
-    border-radius: 5px; /* Zaoblenie rohov pre mäkší vzhľad */
-    background-image: linear-gradient(to right, #3498db, #1abc9c); /* Farebný prechod */
-    transition: width 1s ease-in-out; /* Plynulá animácia prechodu */
-    width: 0%; /* Začiatočná šírka je nula */
+    border-radius: 5px;
+    background-image: linear-gradient(to right, #3498db, #1abc9c);
+    transition: width 1s ease-in-out;
+    width: 0%;
 }
 
-/* Voliteľné: Pridanie niektorých štýlov k textu pre lepšiu čitateľnosť */
+/* Optional: Add some styles to text for better readability */
 .distance p {
     margin: 10px 0;
     font-size: 18px;
+    color: #1abc9c;
+}
+
+/* Style for historical chart container */
+.historical-chart-distance {
+    margin-top: 20px;
+    border: 2px solid #1abc9c; /* Updated border color to match Gas component */
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+/* Style for time range selector */
+.time-range-selector {
+    margin-top: 20px;
+}
+
+.time-range-selector label {
+    font-weight: bold;
+}
+
+.time-range-selector select {
+    margin-left: 10px;
+    padding: 5px;
+    font-size: 16px;
+    border: 2px solid #3498db;
+    border-radius: 5px;
+    background-color: #f9f9f9;
     color: #555;
+    outline: none;
+    cursor: pointer;
+}
+
+/* Style for input in the selector */
+.time-range-selector select:hover,
+.time-range-selector select:focus {
+    border-color: #1abc9c; /* Updated border color on hover and focus to match Gas component */
 }

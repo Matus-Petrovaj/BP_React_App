@@ -2,7 +2,7 @@
 .gas {
     margin: 20px;
     padding: 10px;
-    border: 3px solid #ddd;
+    border: 3px solid #3498db; /* Updated border color to match the graph */
     border-radius: 10px;
     text-align: center;
     width: 50%;
@@ -23,5 +23,40 @@
 .gas p {
     margin: 10px 0;
     font-size: 18px;
+    color: #1abc9c;
+}
+
+/* Štýl pre historický graf */
+.historical-chart-gas {
+    margin-top: 20px;
+    border: 2px solid #1abc9c; /* Added border to the chart container */
+    border-radius: 10px;
+    overflow: hidden; /* Prevents overflowing content from disrupting layout */
+}
+
+/* Štýl pre selektor časového rozsahu */
+.time-range-selector {
+    margin-top: 20px;
+}
+
+.time-range-selector label {
+    font-weight: bold;
+}
+
+.time-range-selector select {
+    margin-left: 10px;
+    padding: 5px;
+    font-size: 16px;
+    border: 2px solid #3498db;
+    border-radius: 5px;
+    background-color: #f9f9f9;
     color: #555;
+    outline: none;
+    cursor: pointer;
+}
+
+/* Štýl pre vstup pri selectore */
+.time-range-selector select:hover,
+.time-range-selector select:focus {
+    border-color: #1abc9c; /* Updated border color on hover and focus */
 }

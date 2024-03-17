@@ -30,7 +30,7 @@ const BMEData = () => {
 
         const intervalId = setInterval(() => {
             fetchBMEData();
-        }, 5000);
+        }, 7000);
 
         return () => clearInterval(intervalId);
     }, []);
@@ -62,6 +62,13 @@ const BMEData = () => {
     // Effekt pre získanie historických údajov pri zmene časového rozsahu
     useEffect(() => {
         fetchHistoricalData();
+
+        const intervalId = setInterval(() => {
+            fetchHistoricalData();
+        }, 15000); // Refresh každých 15 sekúnd
+
+        return () => clearInterval(intervalId);
+
     }, [timeRange]);
 
     // Funkcia pre vykreslenie jednotlivých grafov pre historické údaje
@@ -97,6 +104,11 @@ const BMEData = () => {
                         label: label,
                         data: data,
                         borderColor: borderColor,
+                        borderWidth: 1, // Increase the width of the lines
+                        pointRadius: 3, // Adjust the size of the points
+                        pointHoverRadius: 5, // Adjust the size of the points on hover
+                        pointBackgroundColor: '#1abc9c', // Color for the points
+                        pointStyle: 'circle', // Use circles for data points
                         fill: false,
                     },
                 ],

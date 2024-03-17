@@ -26,7 +26,7 @@
 .bme-item p {
     margin: 12px 0;
     font-size: 20px;
-    color: #333;
+    color: #1abc9c;
 }
 
 /* Dodatočný štýl pre kontajner */
@@ -40,7 +40,7 @@
 .historical-chart-bme {
     margin: 20px; /* Znížený okraj */
     padding: 20px; /* Znížený padding */
-    border: 3px solid #e74c3c;
+    border: 3px solid #1abc9c;
     border-radius: 15px;
     text-align: center;
     display: inline-block; /* Prispôsobený display property */
@@ -50,11 +50,17 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Pridanie jemnej tiene */
 }
 
-/* Štýlovanie pre výberový dropdown */
+/* Styling for the select dropdown */
 .historical-chart-bme select {
     padding: 8px;
     font-size: 16px;
-    margin-bottom: 10px; /* Znížený okraj */
+    margin-bottom: 10px;
+    border: 2px solid #3498db; /* Updated border color similar to Gas component */
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    color: #555;
+    outline: none;
+    cursor: pointer;
 }
 
 /* Štýlovanie pre každý historický graf canvas */

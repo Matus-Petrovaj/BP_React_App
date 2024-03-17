@@ -45,7 +45,7 @@ const Distance = () => {
 
         const fetchIntervalId = setInterval(() => {
             fetchData();
-        }, 5000);
+        }, 7000);
 
         return () => {
             clearInterval(fetchIntervalId);
@@ -67,6 +67,11 @@ const Distance = () => {
                     label: 'Vzdialenosť (cm)',
                     data: historicalDataRef.current,
                     borderColor: '#3498db',
+                    borderWidth: 1, // Increase the width of the lines
+                    pointRadius: 3, // Adjust the size of the points
+                    pointHoverRadius: 5, // Adjust the size of the points on hover
+                    pointBackgroundColor: '#1abc9c', // Color for the points
+                    pointStyle: 'circle', // Use circles for data points
                     fill: false,
                 }],
             },
