@@ -12,7 +12,7 @@ const BMEData = () => {
 
     // Funkcia na získanie aktuálnych údajov z BME senzora
     const fetchBMEData = () => {
-        const apiUrl = `http://192.168.0.74/fetch_bme.php`;
+        const apiUrl = `http://192.168.1.100/fetch_bme.php`;
 
         fetch(apiUrl)
             .then(response => response.json())
@@ -37,7 +37,7 @@ const BMEData = () => {
 
     // Funkcia na získanie historických údajov z BME senzora zo servera
     const fetchHistoricalData = () => {
-        const apiUrl = `http://192.168.0.74/fetch_bme_historical.php?timeRange=${timeRange}`;
+        const apiUrl = `http://192.168.1.100/fetch_bme_historical.php?timeRange=${timeRange}`;
 
         fetch(apiUrl)
             .then(response => response.json())
@@ -73,15 +73,15 @@ const BMEData = () => {
 
     // Funkcia pre vykreslenie jednotlivých grafov pre historické údaje
     const renderHistoricalCharts = historicalData => {
-        renderChart('temperatureChart', 'Teplota', historicalData.map(entry => ({
+        renderChart('temperatureChart', 'Teplota (°C)', historicalData.map(entry => ({
             x: entry.x,
             y: entry.yTemperature
         })), '#e74c3c');
-        renderChart('humidityChart', 'Vlhkosť', historicalData.map(entry => ({
+        renderChart('humidityChart', 'Vlhkosť (%)', historicalData.map(entry => ({
             x: entry.x,
             y: entry.yHumidity
         })), '#3498db');
-        renderChart('pressureChart', 'Tlak', historicalData.map(entry => ({
+        renderChart('pressureChart', 'Tlak (hPa)', historicalData.map(entry => ({
             x: entry.x,
             y: entry.yPressure
         })), '#2ecc71');

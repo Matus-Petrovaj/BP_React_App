@@ -1,16 +1,17 @@
 /* Spoločný štýl pre komponenty Teplota, Vlhkosť a Tlak */
 .bme-item {
-    margin: 20px;
+    margin: 20px auto; /* Top and bottom margin of 20px, and auto margins on the left and right to center */
     padding: 20px;
     border: 2px solid #e74c3c;
     border-radius: 15px;
     text-align: center;
-    width: 45%;
-    display: inline-block;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Aktualizovaný font */
+    width: 50%; /* Set width to 50% of the container's width */
+    display: block; /* Ensures items stack vertically */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Updated font */
     background-color: #f5f5f5;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Pridanie jemnej tiene */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Added subtle shadow */
 }
+
 
 /* Štýl pre teplotný prúžok */
 .bme-bar {
@@ -38,16 +39,18 @@
 
 /* Dodatočný štýl pre historické grafy */
 .historical-chart-bme {
-    margin: 20px; /* Znížený okraj */
-    padding: 20px; /* Znížený padding */
+    margin: 10px auto; /* Centered horizontally with auto margins and reduced vertical margin */
+    padding: 1em; /* Responsive padding based on font size */
     border: 3px solid #1abc9c;
     border-radius: 15px;
     text-align: center;
-    display: inline-block; /* Prispôsobený display property */
-    vertical-align: top; /* Zarovná grafy hore */
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Aktualizovaný font */
+    display: block; /* Changed to block to take the full width of the container */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #f5f5f5;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Pridanie jemnej tiene */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%; /* Full width to maximize responsiveness */
+    max-width: 800px; /* Maximum width to ensure it doesn’t get too large on bigger screens */
+    box-sizing: border-box; /* Includes padding and border in the width */
 }
 
 /* Styling for the select dropdown */

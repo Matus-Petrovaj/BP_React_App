@@ -1,5 +1,6 @@
 import './App.css';
 import './my_components/Menu/Menu.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import React, {useState} from 'react';
 import Header from './my_components/Header/Header';
 import Body from './my_components/Body/Body';
@@ -8,7 +9,7 @@ import BMEData from './my_components/BMESensor/BMEData';
 import Gas from './my_components/GasSensor/Gas';
 
 function App() {
-    const [displayType, setDisplayType] = useState('distance');
+    const [displayType, setDisplayType] = useState('bmeData');
 
     return (
         <div className="App">
