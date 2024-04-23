@@ -4,7 +4,7 @@ import './Body.css';
 const Body = () => {
     return (
         <div className="body">
-            <p>Vitajte v mojej webovej aplikácii na monitorovanie a meranie v laboratóriu. Telo aplikácie.</p>
+            <p>Vitajte v mojej webovej aplikácii na monitoring laboratórnych priestorov. Autor--> Matúš Petrovaj.</p>
         </div>
     );
 };

@@ -47,7 +47,7 @@ const Distance = () => {
             type: 'line',
             data: {
                 datasets: [{
-                    label: 'Distance (cm)',
+                    label: 'Vzdialenosť (cm)',
                     data: historicalDataRef.current,
                     borderColor: '#3498db',
                     borderWidth: 1,
@@ -69,13 +69,13 @@ const Distance = () => {
                         },
                         title: {
                             display: true,
-                            text: 'Time',
+                            text: 'Čas',
                         },
                     },
                     y: {
                         title: {
                             display: true,
-                            text: 'Distance (cm)',
+                            text: 'Vzdialenosť (cm)',
                         },
                         // Customize this section further if needed
                     },
@@ -144,24 +144,23 @@ const Distance = () => {
 
     return (
         <div className="distance">
-            <h2>Distance</h2>
-            <h4>Distance measured by HY-SRF05 sensor</h4>
-            <p>{distance !== null ? `${distance} cm` : 'Loading...'}</p>
-            <h3>Historical Data</h3>
+            <h2>Vzdialenosť</h2>
+            <h4>Vzdialenosť nameraná senzorom HY-SRF05</h4>
+            <p>{distance !== null ? `${distance} cm` : 'Načítava sa...'}</p>
+            <h3>Historické Údaje</h3>
             <div className="historical-chart-distance">
                 <canvas id="distanceChart"></canvas>
             </div>
             <div className="time-range-selector">
-                <label>Time Range: </label>
+                <label>Časový Rozsah: </label>
                 <select value={timeRange} onChange={e => handleTimeRangeChange(e.target.value)}>
-                    <option value="1h">1 Hour</option>
-                    <option value="2h">2 Hours</option>
-                    <option value="4h">4 Hours</option>
-                    <option value="6h">6 Hours</option>
-                    <option value="12h">12 Hours</option>
-                    <option value="1d">1 Day</option>
-                    <option value="1w">1 Week</option>
-                    {/* Add more options as needed */}
+                    <option value="1h">1 Hodina</option>
+                    <option value="2h">2 Hodiny</option>
+                    <option value="4h">4 Hodiny</option>
+                    <option value="6h">6 Hodín</option>
+                    <option value="12h">12 Hodín</option>
+                    <option value="1d">1 Deň</option>
+                    <option value="1w">1 Týždeň</option>
                 </select>
             </div>
         </div>

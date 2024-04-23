@@ -15,9 +15,19 @@
     outline: none;
     background-color: #3498db;
     color: white;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    font-weight: 500; /* Slightly bolder font for better readability */
+    letter-spacing: 0.5px; /* Adds spacing between letters for a cleaner look */
 }
 
 .Menu button:hover {
     background-color: #2980b9;
+    transform: translateY(-2px); /* Slight raise effect on hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Enhanced shadow on hover for a 'lifting' effect */
+}
+
+.Menu button:active {
+    transform: translateY(1px); /* Mimics a button press effect */
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.3); /* Smaller shadow to simulate the button being pressed */
 }

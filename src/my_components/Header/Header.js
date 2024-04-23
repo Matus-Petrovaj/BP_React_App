@@ -4,7 +4,7 @@ import './Header.css'; // CSS súbor pre štýlovanie
 const Header = () => {
     return (
         <div className="header">
-            <h1>Web Aplikácia pre monitorovanie laboratória</h1>
+            <h1>Monitoring laboratórnych priestorov</h1>
         </div>
     );
 };

@@ -43,14 +43,23 @@ const Gas = () => {
         if (chartRef.current) {
             chartRef.current.destroy();
         }
-        const maxPpmValue = Math.max(...historicalDataRef.current.map(entry => entry.y), 500);
-        const yAxisMax = Math.ceil(maxPpmValue / 1000) * 1000;
+
+        const downsamplingRate = getDownsamplingRate(timeRange);
+        const filteredData = historicalDataRef.current.filter((_, index) => index % downsamplingRate === 0);
+
+        // Dynamically calculate the maximum value on the y-axis
+        const maxY = Math.max(...filteredData.map(entry => entry.y), 500);
+        const yAxisMax = Math.ceil(maxY / 1000) * 1000; // Round up to the nearest thousand for maximum y value
+
+        // Calculate step size dynamically based on maxY
+        const stepSize = yAxisMax / 10; // Adjust this division factor to change granularity
+
         const myChart = new Chart(ctx, {
             type: 'line',
             data: {
                 datasets: [{
                     label: 'Plyn (PPM)',
-                    data: historicalDataRef.current,
+                    data: filteredData,
                     borderColor: '#3498db',
                     borderWidth: 1,
                     pointRadius: 3,
@@ -83,9 +92,9 @@ const Gas = () => {
                             text: 'Plyn (PPM)',
                         },
                         min: 0,
-                        max: yAxisMax,
+                        max: yAxisMax, // Use the dynamically calculated max
                         ticks: {
-                            stepSize: yAxisMax / 10,
+                            stepSize: stepSize // Use the dynamically calculated step size
                         },
                     },
                 },
@@ -136,19 +145,41 @@ const Gas = () => {
         chartRef.current = myChart;
     };
 
+    // Determine the downsampling rate based on the selected time range
+    const getDownsamplingRate = (timeRange) => {
+        switch (timeRange) {
+            case '1h':
+                return 1;  // No downsampling for 1 hour
+            case '2h':
+                return 2;
+            case '4h':
+                return 4;
+            case '6h':
+                return 6;
+            case '12h':
+                return 10;  // More aggressive downsampling for longer periods
+            case '1d':
+                return 15;
+            case '1w':
+                return 30;
+            default:
+                return 1;
+        }
+    };
+
+    const handleTimeRangeChange = newTimeRange => {
+        setTimeRange(newTimeRange);
+        fetchData();
+    };
+
     useEffect(() => {
         updateChart(); // Ensure chart updates whenever the historical data changes
     }, [historicalDataRef.current]);
 
-    const handleTimeRangeChange = newTimeRange => {
-        setTimeRange(newTimeRange);
-        fetchData(); // Ensure data is fetched immediately on time range change
-    };
-
     return (
         <div className="gas">
             <h2>Plyn PPM</h2>
-            <h4>Plyn PPM meraný senzorom plynu</h4>
+            <h4>PPM oxidu uhličitého merané senzorom MQ-135</h4>
             <p>{ppm !== null ? `${ppm} PPM` : 'Načítava sa...'}</p>
             <div className="gas-bar-container">
                 <div className="gas-bar" style={{width: ppm ? `${Math.min((ppm / 7000) * 100, 100)}%` : '0%'}}></div>
