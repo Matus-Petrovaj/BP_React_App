@@ -34,7 +34,7 @@ const Distance = () => {
 
     useEffect(() => {
         fetchData();
-        const fetchIntervalId = setInterval(fetchData, 7000);
+        const fetchIntervalId = setInterval(fetchData, 10000);
         return () => clearInterval(fetchIntervalId);
     }, [timeRange]);
 

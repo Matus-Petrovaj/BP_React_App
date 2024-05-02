@@ -1,7 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import Chart from 'chart.js/auto';
+import {Chart as ChartJS, registerables} from 'chart.js'; // Import base ChartJS
+import zoomPlugin from 'chartjs-plugin-zoom'; // Import zoom plugin correctly
 import 'chartjs-adapter-date-fns';
 import './BMEData.css';
+
+ChartJS.register(...registerables, zoomPlugin); // Register zoom plugin explicitly
 
 const BMEData = () => {
     // Stav pre aktuálne údaje z BME senzora
@@ -65,7 +69,7 @@ const BMEData = () => {
 
         const intervalId = setInterval(() => {
             fetchHistoricalData();
-        }, 15000); // Refresh každých 15 sekúnd
+        }, 10000); // Refresh každých 15 sekúnd
 
         return () => clearInterval(intervalId);
 
@@ -99,19 +103,16 @@ const BMEData = () => {
         const myChart = new Chart(ctx, {
             type: 'line',
             data: {
-                datasets: [
-                    {
-                        label: label,
-                        data: data,
-                        borderColor: borderColor,
-                        borderWidth: 1, // Increase the width of the lines
-                        pointRadius: 3, // Adjust the size of the points
-                        pointHoverRadius: 5, // Adjust the size of the points on hover
-                        pointBackgroundColor: '#1abc9c', // Color for the points
-                        pointStyle: 'circle', // Use circles for data points
-                        fill: false,
-                    },
-                ],
+                datasets: [{
+                    label: label,
+                    data: data,
+                    borderColor: borderColor,
+                    borderWidth: 1,
+                    pointRadius: 3,
+                    pointHoverRadius: 5,
+                    pointBackgroundColor: '#1abc9c',
+                    fill: false,
+                }],
             },
             options: {
                 scales: {
@@ -133,15 +134,25 @@ const BMEData = () => {
                             display: true,
                             text: label,
                         },
-                        // Môžete potrebovať prispôsobiť min/max podľa skutočných údajov
-                        // min: 0,
-                        // max: 100,
                     },
                 },
+                plugins: {
+                    zoom: {
+                        pan: {
+                            enabled: true,
+                            mode: 'xy',
+                        },
+                        zoom: {
+                            wheel: {
+                                enabled: true,
+                                mode: 'xy',
+                            },
+                        }
+                    }
+                }
             },
         });
 
-        // Uloženie inštancie grafu na neskoršie použitie
         ctx.chart = myChart;
     };
 
