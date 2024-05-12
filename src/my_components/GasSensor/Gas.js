@@ -1,11 +1,11 @@
 import React, {useEffect, useRef, useState} from 'react';
 import Chart from 'chart.js/auto';
-import {Chart as ChartJS, registerables} from 'chart.js'; // Import base ChartJS
-import zoomPlugin from 'chartjs-plugin-zoom'; // Import zoom plugin correctly
+import {Chart as ChartJS, registerables} from 'chart.js';
+import zoomPlugin from 'chartjs-plugin-zoom';
 import 'chartjs-adapter-date-fns';
 import './Gas.css';
 
-ChartJS.register(...registerables, zoomPlugin); // Register zoom plugin explicitly
+ChartJS.register(...registerables, zoomPlugin);
 
 const Gas = () => {
     const [ppm, setPpm] = useState(null);
@@ -26,7 +26,7 @@ const Gas = () => {
                         y: entry.ppm,
                     }));
                     historicalDataRef.current = historicalData;
-                    updateChart();  // Call updateChart directly here
+                    updateChart();
                 }
             })
             .catch(error => console.error('Error fetching gas data:', error));
@@ -47,12 +47,11 @@ const Gas = () => {
         const downsamplingRate = getDownsamplingRate(timeRange);
         const filteredData = historicalDataRef.current.filter((_, index) => index % downsamplingRate === 0);
 
-        // Dynamically calculate the maximum value on the y-axis
-        const maxY = Math.max(...filteredData.map(entry => entry.y), 500);
-        const yAxisMax = Math.ceil(maxY / 1000) * 1000; // Round up to the nearest thousand for maximum y value
 
-        // Calculate step size dynamically based on maxY
-        const stepSize = yAxisMax / 10; // Adjust this division factor to change granularity
+        const maxY = Math.max(...filteredData.map(entry => entry.y), 500);
+        const yAxisMax = Math.ceil(maxY / 1000) * 1000;
+
+        const stepSize = yAxisMax / 10;
 
         const myChart = new Chart(ctx, {
             type: 'line',
@@ -92,9 +91,9 @@ const Gas = () => {
                             text: 'Plyn (PPM)',
                         },
                         min: 0,
-                        max: yAxisMax, // Use the dynamically calculated max
+                        max: yAxisMax,
                         ticks: {
-                            stepSize: stepSize // Use the dynamically calculated step size
+                            stepSize: stepSize
                         },
                     },
                 },
@@ -145,11 +144,10 @@ const Gas = () => {
         chartRef.current = myChart;
     };
 
-    // Determine the downsampling rate based on the selected time range
     const getDownsamplingRate = (timeRange) => {
         switch (timeRange) {
             case '1h':
-                return 1;  // No downsampling for 1 hour
+                return 1;
             case '2h':
                 return 2;
             case '4h':
@@ -157,7 +155,7 @@ const Gas = () => {
             case '6h':
                 return 6;
             case '12h':
-                return 10;  // More aggressive downsampling for longer periods
+                return 10
             case '1d':
                 return 15;
             case '1w':
@@ -173,7 +171,7 @@ const Gas = () => {
     };
 
     useEffect(() => {
-        updateChart(); // Ensure chart updates whenever the historical data changes
+        updateChart();
     }, [historicalDataRef.current]);
 
     return (

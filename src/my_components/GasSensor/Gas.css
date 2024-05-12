@@ -2,43 +2,38 @@
     margin: 10px;
 }
 
-/* Spoločný štýl pre komponenty Gas a Pressure */
 .gas {
     margin: 20px;
     padding: 10px;
-    border: 3px solid #3498db; /* Updated border color to match the graph */
+    border: 3px solid #3498db;
     border-radius: 10px;
     text-align: center;
     width: 50%;
     display: inline-block;
-    font-family: Arial, sans-serif; /* Voliteľné: Nastavenie písma */
+    font-family: Arial, sans-serif;
 }
 
-/* Štýl pre čiaru PPM plynu */
 .gas-bar {
     height: 10px;
-    border-radius: 5px; /* Zaoblenie rohov pre mäkší vzhľad */
-    background-image: linear-gradient(to right, #3498db, #1abc9c); /* Farebný prechod */
-    transition: width 1s ease-in-out; /* Plynulá animácia prechodu */
-    width: 0%; /* Začiatočná šírka je nula */
+    border-radius: 5px;
+    background-image: linear-gradient(to right, #3498db, #1abc9c);
+    transition: width 1s ease-in-out;
+    width: 0;
 }
 
-/* Voliteľné: Pridanie niektorých štýlov k textu pre lepšiu čitateľnosť */
 .gas p {
     margin: 10px 0;
-    font-size: 18px;
+    font-size: 20px;
     color: #1abc9c;
 }
 
-/* Štýl pre historický graf */
 .historical-chart-gas {
     margin-top: 20px;
-    border: 2px solid #1abc9c; /* Added border to the chart container */
+    border: 2px solid #1abc9c;
     border-radius: 10px;
-    overflow: hidden; /* Prevents overflowing content from disrupting layout */
+    overflow: hidden;
 }
 
-/* Štýl pre selektor časového rozsahu */
 .time-range-selector {
     margin-top: 20px;
 }
@@ -59,8 +54,7 @@
     cursor: pointer;
 }
 
-/* Štýl pre vstup pri selectore */
 .time-range-selector select:hover,
 .time-range-selector select:focus {
-    border-color: #1abc9c; /* Updated border color on hover and focus */
+    border-color: #1abc9c;
 }

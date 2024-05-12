@@ -1,11 +1,11 @@
 import React, {useEffect, useRef, useState} from 'react';
 import Chart from 'chart.js/auto';
-import {Chart as ChartJS, registerables} from 'chart.js'; // Import base ChartJS
-import zoomPlugin from 'chartjs-plugin-zoom'; // Import zoom plugin correctly
+import {Chart as ChartJS, registerables} from 'chart.js';
+import zoomPlugin from 'chartjs-plugin-zoom';
 import 'chartjs-adapter-date-fns';
 import './Distance.css';
 
-ChartJS.register(...registerables, zoomPlugin); // Register zoom plugin explicitly
+ChartJS.register(...registerables, zoomPlugin);
 
 const Distance = () => {
     const [distance, setDistance] = useState(null);
@@ -26,7 +26,7 @@ const Distance = () => {
                         y: entry.distance,
                     }));
                     historicalDataRef.current = historicalData;
-                    updateChart();  // Update the chart as soon as new data is fetched
+                    updateChart();
                 }
             })
             .catch(error => console.error('Error fetching distance data:', error));
@@ -77,7 +77,6 @@ const Distance = () => {
                             display: true,
                             text: 'Vzdialenosť (cm)',
                         },
-                        // Customize this section further if needed
                     },
                 },
                 plugins: {
@@ -126,7 +125,7 @@ const Distance = () => {
     };
 
     useEffect(() => {
-        updateChart(); // Ensure the chart is updated when the historical data changes
+        updateChart();
     }, [historicalDataRef.current]);
 
     useEffect(() => {

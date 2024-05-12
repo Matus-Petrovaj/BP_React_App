@@ -1,64 +1,58 @@
-/* Spoločný štýl pre komponenty Teplota, Vlhkosť a Tlak */
 .bme-item {
-    margin: 20px auto; /* Top and bottom margin of 20px, and auto margins on the left and right to center */
+    margin: 20px auto;
     padding: 20px;
     border: 2px solid #e74c3c;
     border-radius: 15px;
     text-align: center;
-    width: 50%; /* Set width to 50% of the container's width */
-    display: block; /* Ensures items stack vertically */
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Updated font */
+    width: 50%;
+    display: block;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #f5f5f5;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Added subtle shadow */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 
-/* Štýl pre teplotný prúžok */
 .bme-bar {
     height: 12px;
     border-radius: 6px;
-    background-image: linear-gradient(to right, #f39c12, #e74c3c); /* Gradient s rôznymi farbami */
+    background-image: linear-gradient(to right, #f39c12, #e74c3c);
     transition: width 1s ease-in-out;
-    width: 0%;
+    width: 0;
     margin-top: 15px;
 }
 
-/* Voliteľné: Pridanie štýlu k textu pre lepšiu čitateľnosť */
 .bme-item p {
     margin: 12px 0;
     font-size: 20px;
     color: #1abc9c;
 }
 
-/* Dodatočný štýl pre kontajner */
 .bme-item h4 {
     font-size: 18px;
     margin-bottom: 8px;
     color: #555;
 }
 
-/* Dodatočný štýl pre historické grafy */
 .historical-chart-bme {
-    margin: 10px auto; /* Centered horizontally with auto margins and reduced vertical margin */
-    padding: 1em; /* Responsive padding based on font size */
+    margin: 10px auto;
+    padding: 1em;
     border: 3px solid #1abc9c;
     border-radius: 15px;
     text-align: center;
-    display: block; /* Changed to block to take the full width of the container */
+    display: block;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #f5f5f5;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 100%; /* Full width to maximize responsiveness */
-    max-width: 800px; /* Maximum width to ensure it doesn’t get too large on bigger screens */
-    box-sizing: border-box; /* Includes padding and border in the width */
+    width: 100%;
+    max-width: 800px;
+    box-sizing: border-box;
 }
 
-/* Styling for the select dropdown */
 .historical-chart-bme select {
     padding: 8px;
     font-size: 16px;
     margin-bottom: 10px;
-    border: 2px solid #3498db; /* Updated border color similar to Gas component */
+    border: 2px solid #3498db;
     border-radius: 5px;
     background-color: #f9f9f9;
     color: #555;
@@ -66,13 +60,19 @@
     cursor: pointer;
 }
 
-/* Štýlovanie pre každý historický graf canvas */
 .historical-chart-bme canvas {
     width: 100%;
-    max-width: 800px; /* Prispôsobte maximálnu šírku podľa potreby */
-    margin: 0 auto;
-    margin-bottom: 10px; /* Znížený okraj */
+    max-width: 90vw;
+    height: auto;
+    display: block;
+    margin: 0 auto 10px;
     border: 2px solid #3498db;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Pridanie jemnej tiene */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 600px) {
+    .historical-chart-bme canvas {
+        max-width: 100%;
+    }
 }

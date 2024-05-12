@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import Chart from 'chart.js/auto';
-import {Chart as ChartJS, registerables} from 'chart.js'; // Import base ChartJS
-import zoomPlugin from 'chartjs-plugin-zoom'; // Import zoom plugin correctly
+import {Chart as ChartJS, registerables} from 'chart.js';
+import zoomPlugin from 'chartjs-plugin-zoom';
 import 'chartjs-adapter-date-fns';
 import './BMEData.css';
 
-ChartJS.register(...registerables, zoomPlugin); // Register zoom plugin explicitly
+ChartJS.register(...registerables, zoomPlugin);
 
 const BMEData = () => {
     // Stav pre aktuálne údaje z BME senzora
@@ -95,7 +95,7 @@ const BMEData = () => {
     const renderChart = (canvasId, label, data, borderColor) => {
         const ctx = document.getElementById(canvasId);
 
-        // Zničenie existujúceho inštancie grafu, ak existuje
+        // Zničenie existujúcej inštancie grafu, ak existuje
         if (ctx.chart) {
             ctx.chart.destroy();
         }
