@@ -8,7 +8,7 @@ import './BMEData.css';
 ChartJS.register(...registerables, zoomPlugin);
 
 const BMEData = () => {
-    // Stav pre aktuálne údaje z BME senzora
+    // Stav pre aktuálne údaje z BME280 senzora
     const [bmeData, setBMEData] = useState(null);
 
     // Stav pre aktuálny časový rozsah pre historické údaje
@@ -48,7 +48,6 @@ const BMEData = () => {
             .then(data => {
                 if (data && data.length > 0) {
                     // Predpokladá sa formát údajov { temperature: number, humidity: number, pressure: number, timestamp: string }
-                    // Môžete potrebovať prispôsobiť štruktúru podľa skutočných údajov
                     const historicalData = data.map(entry => ({
                         x: new Date(entry.timestamp),
                         yTemperature: entry.temperature,
@@ -69,7 +68,7 @@ const BMEData = () => {
 
         const intervalId = setInterval(() => {
             fetchHistoricalData();
-        }, 10000); // Refresh každých 15 sekúnd
+        }, 10000); // Refresh každých 10 sekúnd
 
         return () => clearInterval(intervalId);
 

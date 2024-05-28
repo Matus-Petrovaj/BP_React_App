@@ -1,5 +1,5 @@
 import React from 'react';
-import './Header.css'; // CSS súbor pre štýlovanie
+import './Header.css';
 
 const Header = () => {
     return (

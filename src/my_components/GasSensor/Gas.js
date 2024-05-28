@@ -5,14 +5,17 @@ import zoomPlugin from 'chartjs-plugin-zoom';
 import 'chartjs-adapter-date-fns';
 import './Gas.css';
 
+// Registrácia potrebných komponentov pre Chart.js
 ChartJS.register(...registerables, zoomPlugin);
 
 const Gas = () => {
+    // Definovanie stavov a referencií
     const [ppm, setPpm] = useState(null);
     const historicalDataRef = useRef([]);
     const chartRef = useRef(null);
     const [timeRange, setTimeRange] = useState('1h');
 
+    // Funkcia na získanie dát z API
     const fetchData = () => {
         const apiUrl = `http://192.168.1.100/fetch_gas_historical.php?timeRange=${timeRange}`;
         fetch(apiUrl)
@@ -32,32 +35,35 @@ const Gas = () => {
             .catch(error => console.error('Error fetching gas data:', error));
     };
 
+    // useEffect na inicializáciu získavania dát a periodické obnovovanie
     useEffect(() => {
         fetchData();
         const fetchIntervalId = setInterval(fetchData, 10000);
         return () => clearInterval(fetchIntervalId);
     }, [timeRange]);
 
+    // Funkcia na aktualizáciu grafu
     const updateChart = () => {
         const ctx = document.getElementById('gasChart');
         if (chartRef.current) {
             chartRef.current.destroy();
         }
 
+        // Získanie rýchlosti downsamplingu podľa časového rozsahu
         const downsamplingRate = getDownsamplingRate(timeRange);
         const filteredData = historicalDataRef.current.filter((_, index) => index % downsamplingRate === 0);
 
-
+        // Nastavenie maximálnej hodnoty y-osi
         const maxY = Math.max(...filteredData.map(entry => entry.y), 500);
         const yAxisMax = Math.ceil(maxY / 1000) * 1000;
-
+        // Nastavenie kroku pre y-os
         const stepSize = yAxisMax / 10;
 
         const myChart = new Chart(ctx, {
             type: 'line',
             data: {
                 datasets: [{
-                    label: 'Plyn (PPM)',
+                    label: 'CO2 (ppm)',
                     data: filteredData,
                     borderColor: '#3498db',
                     borderWidth: 1,
@@ -88,7 +94,7 @@ const Gas = () => {
                     y: {
                         title: {
                             display: true,
-                            text: 'Plyn (PPM)',
+                            text: 'CO2 (ppm)',
                         },
                         min: 0,
                         max: yAxisMax,
@@ -144,6 +150,7 @@ const Gas = () => {
         chartRef.current = myChart;
     };
 
+    // Funkcia na získanie rýchlosti downsamplingu na základe časového rozsahu
     const getDownsamplingRate = (timeRange) => {
         switch (timeRange) {
             case '1h':
@@ -165,19 +172,22 @@ const Gas = () => {
         }
     };
 
+    // Funkcia na zmenu časového rozsahu
     const handleTimeRangeChange = newTimeRange => {
         setTimeRange(newTimeRange);
         fetchData();
     };
 
+    // useEffect na aktualizáciu grafu pri zmene historických dát
     useEffect(() => {
         updateChart();
     }, [historicalDataRef.current]);
 
+    // Renderovanie komponentu Gas
     return (
         <div className="gas">
-            <h2>Plyn PPM</h2>
-            <h4>PPM oxidu uhličitého merané senzorom MQ-135</h4>
+            <h2>CO2 ppm</h2>
+            <h4>ppm oxidu uhličitého merané senzorom MQ-135</h4>
             <p>{ppm !== null ? `${ppm} PPM` : 'Načítava sa...'}</p>
             <div className="gas-bar-container">
                 <div className="gas-bar" style={{width: ppm ? `${Math.min((ppm / 7000) * 100, 100)}%` : '0%'}}></div>

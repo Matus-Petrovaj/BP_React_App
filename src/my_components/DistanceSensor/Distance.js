@@ -5,14 +5,17 @@ import zoomPlugin from 'chartjs-plugin-zoom';
 import 'chartjs-adapter-date-fns';
 import './Distance.css';
 
+// Registrácia potrebných komponentov pre Chart.js
 ChartJS.register(...registerables, zoomPlugin);
 
 const Distance = () => {
+    // Definovanie stavov a referencií
     const [distance, setDistance] = useState(null);
     const historicalDataRef = useRef([]);
     const chartRef = useRef(null);
     const [timeRange, setTimeRange] = useState('1h');
 
+    // Funkcia na získanie dát z API
     const fetchData = () => {
         const apiUrl = `http://192.168.1.100/fetch_distance_historical.php?timeRange=${timeRange}`;
         fetch(apiUrl)
@@ -32,12 +35,14 @@ const Distance = () => {
             .catch(error => console.error('Error fetching distance data:', error));
     };
 
+    // useEffect na inicializáciu získavania dát a periodické obnovovanie
     useEffect(() => {
         fetchData();
         const fetchIntervalId = setInterval(fetchData, 10000);
         return () => clearInterval(fetchIntervalId);
     }, [timeRange]);
 
+    // Funkcia na aktualizáciu grafu
     const updateChart = () => {
         const ctx = document.getElementById('distanceChart');
         if (chartRef.current) {
@@ -124,10 +129,12 @@ const Distance = () => {
         chartRef.current = myChart;
     };
 
+    // useEffect na aktualizáciu grafu pri zmene historických dát
     useEffect(() => {
         updateChart();
     }, [historicalDataRef.current]);
 
+    // useEffect na resetovanie historických dát
     useEffect(() => {
         const resetIntervalId = setInterval(() => {
             historicalDataRef.current = [];
@@ -136,11 +143,13 @@ const Distance = () => {
         return () => clearInterval(resetIntervalId);
     }, []);
 
+    // Funkcia na zmenu časového rozsahu
     const handleTimeRangeChange = newTimeRange => {
         setTimeRange(newTimeRange);
         fetchData();
     };
 
+    // Renderovanie komponentu Distance
     return (
         <div className="distance">
             <h2>Vzdialenosť</h2>
